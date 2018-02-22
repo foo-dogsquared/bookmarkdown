@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+     <!-- Google Font link below this line -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|PT+Mono|PT+Sans+Narrow" rel="stylesheet">
+
+    <!-- related docs -->
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="./assets/queries.css">
+
+    <!-- Font Awesome -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
+    <title> Custom Resource Page </title>
+</head>
+<body>
+    <!-- overall container -->
+    <div id="motherContainer">
+
+        <!-- the header, OBVIOUSLY! -->
+        <div id="header">
+            <label for="inputLink">BOOKMARKDOWN</label>
+        </div>
+
+        <div id="mainContainer">
+            <!-- actual links container -->
+            <div id="main-linkContainer">
+                <input name="inputLink" id="inputLink" placeholder="URL" title="Put the URL here, make sure it has no spaces." type="text">
+                <input name="inputName" id="inputName" class="nameLink" placeholder="Name (optional)" title="You can assign it a name instead of showing the URL." type="text">
+                <button id="addLink">Add links</button>
+            </div> 
+
+
+            <!-- links button container -->
+            <div id="main-buttonContainer">
+                <p id="errorSpace"></p>
+            </div>
+
+            <div id="savedLinks">
+                <ul id="list">
+                </ul>
+            </div>
+        </div>
+
+        <!-- obv, the footer -->
+        <div id="footer">
+            Written and coded by Christian Arazas
+        </div>
+
+
+    </div>
+
+    <!-- JavaScript source file-->
+    <script src="./scripts/main.js">
+    </script>
+</body>
+</html>
