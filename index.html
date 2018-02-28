@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-     <!-- Google Font link below this line -->
+    <!-- Google Font link below this line -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|PT+Mono|PT+Sans+Narrow" rel="stylesheet">
 
     <!-- related docs -->
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="./assets/queries.css">
+    <link rel="shortcut icon" href="../favicon.svg" type="image/x-icon" item-height="32px">
 
     <!-- Font Awesome -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
 
     <title> Custom Resource Page </title>
 </head>
+
 <body>
     <!-- overall container -->
     <div id="motherContainer">
 
         <!-- the header, OBVIOUSLY! -->
         <div id="header">
-            <label for="inputLink">BOOKMARKDOWN</label>
+            <div id="icon">
+                <span class="fa-layers fa-fw">
+                    <i class="far fa-bookmark fa-3x"></i>
+                    <i class="fas fa-arrow-down fa-2x" data-fa-transform="right-2"></i>
+                </span>
+            </div>
+            <label for="inputLink" class="title">bookmarkdown</label>
+            <p>A program that stores your favorite places on the internet. No worries about tracking you, this is an offline
+                tool and the data are saved inside of your browser.
+            </p>
         </div>
 
         <div id="mainContainer">
             <!-- actual links container -->
             <div id="main-linkContainer">
-                <input name="inputLink" id="inputLink" placeholder="URL" title="Put the URL here, make sure it has no spaces." type="text">
-                <input name="inputName" id="inputName" class="nameLink" placeholder="Name (optional)" title="You can assign it a name instead of showing the URL." type="text">
+                <input name="inputLink" id="inputLink" placeholder="URL" title="Put the URL here, make sure it is valid." type="text">
+                <input name="inputName" id="inputName" class="nameLink" placeholder="Name (optional)" title="You can assign it a name instead of showing the URL."
+                    type="text">
                 <button id="addLink">Add links</button>
-            </div> 
+            </div>
 
 
             <!-- links button container -->
@@ -58,4 +71,5 @@
     <script src="./scripts/main.js">
     </script>
 </body>
+
 </html>

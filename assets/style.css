@@ -5,10 +5,17 @@
 
 /* general variables */
 :root {
+    /* variable(s) for the button */
+    --buttonHover: #d8d8f6;
+
+    /* variables for the link input fields */
+    --inputFocus: #d9e8f7;
+
     /* variables for the list background */
     --list-odd: #8ed081;
     --list-even: #b8d1b3;
-    --list-hover: #b3e2aa;
+    --list-hover-odd: #85a3c1;
+    --list-hover-even: #91bae2;
     --list-active: #60b54f;
 }
 
@@ -42,11 +49,26 @@ a, a:visited {
 */
 #header {
     font-family: 'PT Sans Narrow', sans-serif;
-    font-size: 2em;
     margin: 0 auto;
     max-width: 100%;
     padding: 1em 1em .2em 1em;
     text-align: center;
+}
+
+#header label {
+    font-size: 2.5em;
+}
+
+#header p {
+    font-size: 1.1em;
+}
+
+#header .title {
+    text-transform: uppercase;
+}
+
+#icon {
+    margin: 1.2em;
 }
 
 /*
@@ -63,7 +85,6 @@ a, a:visited {
 }
 
 
-
 /*
 *
 *       BUTTON STYLINGS
@@ -73,6 +94,7 @@ a, a:visited {
 #main-linkContainer {
     display: grid;
     grid-gap: 8%;
+    grid-template-columns: repeat(1, 1fr 3fr 1fr);
     grid-template-areas:
         "url    url    url"
         "name   name   name"
@@ -80,22 +102,39 @@ a, a:visited {
     ;
 }
 
+#inputLink, 
+#inputName, 
+#addLink {
+    font-size: 1.2em;
+    border: solid 1px black;
+}
+
+#inputLink:focus,
+#inputName:focus {
+    background: var(--inputFocus);
+    border: solid 1px black;
+}
+
 #inputLink {
     grid-area: url;
 
-    font-size: 1.2em;
+    padding: .25em;
 }
 
 #inputName {
     grid-area: name;
 
-    font-size: 1.2em;
+    padding: .25em;
 }
 
 #addLink {
     grid-area: add;
 
-    font-size: 1.2em;
+    cursor: pointer;
+}
+
+#addLink:hover {
+    background: var(--buttonHover);
 }
 
 /*
@@ -106,40 +145,61 @@ a, a:visited {
 #mainContainer #savedLinks {
     overflow-wrap: break-word;
     overflow-y: scroll;
-    height: 450px;
+    height: 350px;
     min-height: 20%;
     margin: 1em 0 3em;
 }
 
+
+@media screen and (max-height:600px) {
+    #mainContainer #savedLinks {
+        height: 250px;
+    }
+}
+
+@media screen and (max-height:500px) {
+    #mainContainer #savedLinks {
+        height: 150px;
+    }
+}
+
 #savedLinks ul {
+    margin: 0;
+
     background: #efefef;
-    list-style: circle;
+}
+
+#savedLinks ul li {
+    display: flex;
+
+    align-content: center;
+    justify-content: space-between;
+}
+
+#savedLinks ul li:nth-child(odd),
+#savedLinks ul li:nth-child(even) {
+    box-sizing: content-box;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.15em;
+    transition: .1s;
 }
 
 #savedLinks ul li:nth-child(odd) {
-    box-sizing: content-box;
-    background: var(--list-odd);
-    cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.15em;
-    padding: 1em;
-    transition: .1s;
+    background: var(--list-odd);    
 }
 
+#savedLinks ul li:nth-child(odd):hover {
+    background: var(--list-hover-odd);
+    transition: .2s;
+}
 
 #savedLinks ul li:nth-child(even) {
-    box-sizing: content-box;
     background: var(--list-even);
-    cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.15em;
-    padding: 1em;
-    transition: .1s;
 }
 
-#savedLinks ul li:hover {
-    background: var(--list-hover);
-    list-style: disc;
+#savedLinks ul li:nth-child(even):hover {
+    background: var(--list-hover-even);
     transition: .2s;
 }
 
@@ -148,12 +208,20 @@ a, a:visited {
     transition: .2s;
 }
 
+#savedLinks li > a {
+    padding: 1em;
+
+    width: 100%;
+}
+
 @media screen and (max-width: 700px) {
     #savedLinks ul {
-        list-style: none;
-        margin: 0;
         padding: 0;
     }
+}
+
+.closeBtn {
+    padding: 0 3vh;
 }
 
 /*
