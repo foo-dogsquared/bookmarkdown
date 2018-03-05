@@ -47,10 +47,10 @@ function pushData(e) {
         let db = e.target.result;
 
         // creating the link object store to store our data in
-        let objectStore = db.createObjectStore("links", { keyPath: "id", autoIncrement: true});
+        let objectStore = db.createObjectStore('links', { keyPath: 'id', autoIncrement:true });
 
         // creating the index of our needed data
-        let linkData = objectStore.createIndex('link', 'link', {unique: false});
+        let linkData = objectStore.createIndex('url', 'url', {unique: true});
         let nameData = objectStore.createIndex('name', 'name', {unique: false});
 
         // just for checking
@@ -132,7 +132,7 @@ function pushData(e) {
                 // adding the required items
                 closeButton.setAttribute("class", "closeBtn");
                 closeButton.textContent = "X";
-                // closeButton.onclick = deleteItem;
+                closeButton.onclick = deleteItem;
 
                 link.setAttribute("href", cursor.value.url);
 
@@ -141,7 +141,7 @@ function pushData(e) {
                 (cursor.value.name) ? link.textContent = cursor.value.name : link.textContent = cursor.value.url;
 
                 // setting up the <li> to have id numbers to easily refer to them
-                listItem.setAttribute("data-link-id", cursor.value.id);
+                listItem.setAttribute("data-link-id", cursor.key);
 
                 // adding the elements inside of the list item
                 listItem.appendChild(link);
@@ -172,16 +172,12 @@ function pushData(e) {
         // deleting that particular item
         let request = objectStore.delete(linkId);
 
-        /* once the transaction is successful meaning the action we try to do
-        is complete, do the following */
-        transaction.oncomplete = function() {
-            e.target.parentNode.parentNode.deleteChild(e.target.parentNode);
-        }
-
         // checks if the list is empty
         if(!list.firstChild) {
             isEmptyList();
         }
+    
+        displayData();
     }
 
         function isEmptyList() {
