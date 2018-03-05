@@ -17,6 +17,9 @@
     --list-hover-odd: #85a3c1;
     --list-hover-even: #91bae2;
     --list-active: #60b54f;
+
+    /* default font family */
+    --fontFamily: 'PT Sans Narrow', sans-serif;
 }
 
 html, body {
@@ -48,7 +51,7 @@ a, a:visited {
 *
 */
 #header {
-    font-family: 'PT Sans Narrow', sans-serif;
+    font-family: var(--fontFamily);
     margin: 0 auto;
     max-width: 100%;
     padding: 1em 1em .2em 1em;
@@ -59,8 +62,19 @@ a, a:visited {
     font-size: 2.5em;
 }
 
-#header p {
+#header .program-desc {
+    margin: 0 auto;
+    padding: .4em;
+
+    width: 70%;
+
     font-size: 1.1em;
+}
+
+@media screen and (max-width: 500px) {
+    #header .program-desc {
+        width: 100%;
+    }
 }
 
 #header .title {
@@ -135,6 +149,11 @@ a, a:visited {
 
 #addLink:hover {
     background: var(--buttonHover);
+}
+
+#status_space {
+    font-family: var(--fontFamily);
+    text-align: center;
 }
 
 /*

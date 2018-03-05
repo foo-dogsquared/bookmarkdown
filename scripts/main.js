@@ -1,9 +1,8 @@
-// jshint esversion:6
 // setup for the page elements
-var urlInput = document.getElementById("inputLink"),
+const urlInput = document.getElementById("inputLink"),
     nameInput = document.getElementById("inputName"),
     button = document.getElementById("addLink"),
-    errorSpace = document.getElementById("errorSpace"),
+    status_space = document.getElementById("status_space"),
     list = document.getElementById("list"),
     savedLinks = document.getElementById("savedLinks");
 
@@ -11,57 +10,186 @@ urlInput.value = '';
 nameInput.value = '';
 urlInput.focus();
 
+// we set up a database for the links using IndexedDB
+var db;
 
-// list of links that the user saved
-var links = [];
-
-// adding links from the "Add Links" button
-function addLinks(e) {
-    let list_item = document.createElement("li"),
-        list_links = document.createElement("a"),
-        list_closeBtn = document.createElement("p");
+/* the whole function of the asynchronous event
+meaning this will load after the page style 
+(such as HTML and CSS) has been loaded so no
+more staring at a blank screen each time you're
+loading the page */
+function pushData(e) {
     
-    window.localStorage.setItem("links", urlInput.value);
-
-    list_links.setAttribute("href", urlInput.value);
-    (nameInput.value) ? list_links.textContent = nameInput.value : list_links.textContent = urlInput.value;
-
-    list_closeBtn.setAttribute("class", "closeBtn");
-    list_closeBtn.textContent = "X";
-
-    list_item.appendChild(list_links);
-    list_item.appendChild(list_closeBtn);
-    list.appendChild(list_item);
-
-    pushObject()
-    urlInput.value = '';
-    nameInput.value = '';
-}
-
-// function for each of the closeBtn, also an event delegation for the <ul>
-function close(e) {
-    if (e.target && e.target.matches(".closeBtn")) {
-        savedLinks.removeChild(e.target);
+    // setting up a database
+    let setDB = window.indexedDB.open("linksDB", 1);
+    
+    // in case opening of the database has failed
+    setDB.onerror = function() {
+        status_space.textContent = "Something is wrong from the database.";
+        console.log("Database failed to open.");
     }
-} 
 
-// creating the links as objects through a constructor
-function LinkValues(url, name) {
-    this.url = url;
-    this.name = name;
-}
+    // in case the database is found
+    setDB.onsuccess = function() {
+        status_space.textContent = "Bookmarks loaded.";
+        console.log("Database opening is successful.");
 
-// pushing the object to the array that the browser will parse through when 
-// the page reloads or loads on another time
-function pushObject() {
-    // the new object to be pushed
-    let linkObject = new LinkValues(urlInput.value, nameInput.value);
-        localStorage.setItem("object1", linkObject);
+        // putting the values on the db variable
+        db = setDB.result;
 
-    links.push(linkObject);
-}
+        // displays the data
+        displayData();
+    }
 
-// making the button do its intended work
-button.addEventListener("click", addLinks);
+    setDB.onupgradeneeded = function(e) {
+        
+        // the reference to the opened database
+        let db = e.target.result;
 
-savedLinks.addEventListener("click", close);
+        // creating the link object store to store our data in
+        let objectStore = db.createObjectStore("links", { keyPath: "id", autoIncrement: true});
+
+        // creating the index of our needed data
+        let linkData = objectStore.createIndex('link', 'link', {unique: false});
+        let nameData = objectStore.createIndex('name', 'name', {unique: false});
+
+        // just for checking
+        console.log("Database setup complete.");
+    };
+
+    // 'click' event handler and its function for the button
+    button.addEventListener("click", createDBData);
+
+    function createDBData(e) {
+
+        if ((urlInput.value.match(/\w/gi))) {
+            // constructing the object
+            let newData = {
+                url: urlInput.value,
+                name: nameInput.value
+            }
+
+            // setting the transaction up to access and write the data
+            let transaction = db.transaction(["links"], 'readwrite');
+
+            // transaction is created and we open an objectStore
+            let objectStore = transaction.objectStore("links");
+
+            // making request to add the newData object into to the object store
+            let request = objectStore.add(newData);
+
+            // clearing the form
+            request.onsuccess = function() {
+                urlInput.value = '';
+                nameInput.value = '';
+            }
+
+            // reporting the success if the process is done
+            transaction.oncomplete = function() {
+                status_space.textContent = "Bookmark added.";
+
+                // displaying the data once again to update
+                displayData();
+            }
+
+            transaction.onerror = function() {
+                status_space.textContent = "Transaction not completed due to some error.";
+            }
+        } else {
+            status_space.textContent = "URL is empty/valid.";
+            urlInput.focus();
+            e.preventDefault();
+        }
+    }
+
+    function displayData(e) {
+        /* this block of code is needed when we are going to update
+        the list since if we don't do that, we will see duplicates
+        of the list with the updated value being added each time 
+        we are going to display the list of bookmarks on the page */
+        while(list.firstChild) {
+            list.removeChild(list.firstChild);
+        }
+
+        /* next, we will open the object store again then get a cursor
+        that will iterate through each data that is stored on the database.
+        In each data the cursor goes through, then that's where we create
+        the list similar to the resulted screen */
+        let objectStore = db.transaction(["links"]).objectStore("links");
+        
+        objectStore.openCursor().onsuccess = function (e) {
+            
+            // a reference to the cursor
+            let cursor = e.target.result;
+
+            // the cursor will iterate through data items until there's no more
+            // left after the last data item
+            if (cursor) {
+                let listItem = document.createElement("li"),
+                    link = document.createElement("a"),
+                    closeButton = document.createElement("p");
+
+                // adding the required items
+                closeButton.setAttribute("class", "closeBtn");
+                closeButton.textContent = "X";
+                // closeButton.onclick = deleteItem;
+
+                link.setAttribute("href", cursor.value.url);
+
+                /* checking if the user has entered a name for their bookmark
+                if it does, the name will appear on the list, instead */
+                (cursor.value.name) ? link.textContent = cursor.value.name : link.textContent = cursor.value.url;
+
+                // setting up the <li> to have id numbers to easily refer to them
+                listItem.setAttribute("data-link-id", cursor.value.id);
+
+                // adding the elements inside of the list item
+                listItem.appendChild(link);
+                listItem.appendChild(closeButton);
+
+                // list item adding to the list
+                list.appendChild(listItem);
+
+                cursor.continue();
+            } else {
+                // checks if the list is empty
+                isEmptyList();
+                }
+            }
+        }
+
+
+    function deleteItem(e) {
+        // referring back to the data-link-id value
+        let linkId = Number(e.target.parentNode.getAttribute("data-link-id"));
+
+        // opening up a transaction to be able to delete the item
+        let transaction = db.transaction(["links"], "readwrite");
+
+        // request to open up an object store/record
+        let objectStore = transaction.objectStore("links");
+
+        // deleting that particular item
+        let request = objectStore.delete(linkId);
+
+        /* once the transaction is successful meaning the action we try to do
+        is complete, do the following */
+        transaction.oncomplete = function() {
+            e.target.parentNode.parentNode.deleteChild(e.target.parentNode);
+        }
+
+        // checks if the list is empty
+        if(!list.firstChild) {
+            isEmptyList();
+        }
+    }
+
+        function isEmptyList() {
+            if(!list.firstChild) {
+                status_space.textContent = "No links are stored.";
+            }
+    }
+};
+
+// an asynchronous function that will load when the whole page is finished
+window.addEventListener('load', pushData);
