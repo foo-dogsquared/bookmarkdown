@@ -186,8 +186,7 @@ function pushData(e) {
 
     // A service worker will save the page allowing you to run it offline (in case, this came from online)
     if('serviceWorker' in navigator) {
-        navigator.serviceWorker
-                 .register('./sw.js')
+        navigator.serviceWorker.register('./sw.js')
                  .then(function() { console.log('Service Worker Registered'); })
                  .catch(function() { console.log("Service Worker Failed")});
       }
