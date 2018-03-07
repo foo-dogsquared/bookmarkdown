@@ -13,6 +13,23 @@ urlInput.focus();
 // we set up a database for the links using IndexedDB
 var db;
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/bookmarkdown/service-worker.js', { scope: './' }).then(function(reg) {
+  
+      if(reg.installing) {
+        console.log('Service worker installing');
+      } else if(reg.waiting) {
+        console.log('Service worker installed');
+      } else if(reg.active) {
+        console.log('Service worker active');
+      }
+  
+    }).catch(function(error) {
+      // registration failed
+      console.log('Registration failed with ' + error);
+    });
+  }
+
 /* the whole function of the asynchronous event
 meaning this will load after the page style 
 (such as HTML and CSS) has been loaded so no
@@ -185,11 +202,6 @@ function pushData(e) {
     }
 
     // A service worker will save the page allowing you to run it offline (in case, this came from online)
-    if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-                 .then(function() { console.log('Service Worker Registered'); })
-                 .catch(function() { console.log("Service Worker Failed")});
-      }
 };
 
 // an asynchronous function that will load when the whole page is finished
