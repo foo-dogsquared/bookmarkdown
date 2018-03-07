@@ -33,6 +33,30 @@ html {
     transition: font-size .2s;
 }
 
+.personal_logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    opacity: .4;
+
+    height: 50px;
+    width: 50px;
+
+    color: gray;
+    transition: .3s;
+    z-index: 2;
+
+}
+
+
+.personal_logo:hover {
+    opacity: 1;
+
+    color: gray;
+    transition: .3s;
+}
+
 a, a:visited {
     box-sizing: inherit;
     color: black;

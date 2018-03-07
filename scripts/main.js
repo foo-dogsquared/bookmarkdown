@@ -173,9 +173,7 @@ function pushData(e) {
         let request = objectStore.delete(linkId);
 
         // checks if the list is empty
-        if(!list.firstChild) {
-            isEmptyList();
-        }
+        isEmptyList();
     
         displayData();
     }
@@ -183,8 +181,16 @@ function pushData(e) {
         function isEmptyList() {
             if(!list.firstChild) {
                 status_space.textContent = "No links are stored.";
-            }
+        }
     }
+
+    // A service worker will save the page allowing you to run it offline (in case, this came from online)
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker
+                 .register('./sw.js')
+                 .then(function() { console.log('Service Worker Registered'); })
+                 .catch(function() { console.log("Service Worker Failed")});
+      }
 };
 
 // an asynchronous function that will load when the whole page is finished
