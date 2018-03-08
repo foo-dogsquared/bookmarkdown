@@ -23,26 +23,29 @@ function pushData(e) {
     // setting up a database
     let setDB = window.indexedDB.open("linksDB", 1);
     
-    // in case opening of the database has failed
-    setDB.onerror = function() {
-        status_space.textContent = "Something is wrong from the database.";
-        console.log("Database failed to open.");
-    }
-
-    // in case the database is found
-    setDB.onsuccess = function() {
+    // a Promise object for opening of the database
+    new Promise(function(resolve, reject) {
+        setDB.onsuccess = resolve;
+        setDB.onerror = reject;
+    })
+    .then(function() {
         status_space.textContent = "Bookmarks loaded.";
         console.log("Database opening is successful.");
 
-        // putting the values on the db variable
+        // setting the database to be more accessible 
         db = setDB.result;
 
-        // displays the data
+        // it will display the data from the database once it opens
         displayData();
-    }
+    })
+    .catch(function() {
+        status_space.textContent = "There is something wrong with the database.";
+        console.log("Database has failed to load.");
+    });
+    
 
     setDB.onupgradeneeded = function(e) {
-        
+
         // the reference to the opened database
         let db = e.target.result;
 
@@ -178,11 +181,11 @@ function pushData(e) {
         displayData();
     }
 
-        function isEmptyList() {
-            if(!list.firstChild) {
-                status_space.textContent = "No links are stored.";
-        }
+    function isEmptyList() {
+        if(!list.firstChild) {
+            status_space.textContent = "No links are stored.";
     }
+}
 
     // A service worker will save the page allowing you to run it offline (in case, this came from online)
     if ('serviceWorker' in navigator) {
