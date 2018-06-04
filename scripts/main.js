@@ -65,8 +65,11 @@ function pushData(e) {
 
     function createDBData(e) {
 
-        if ((urlInput.value.match(/\w/gi))) {
+        const urlRegex = /(?:[http]{1}s?[:]\/\/)?[\w|\W|\d]+[.][\w]+/gi;
+        if ((urlInput.value.match(urlRegex))) {
             // constructing the object
+            if (!(urlInput.value.match(/http+s?[:]\/\//))) urlInput.value = "http://" + urlInput.value;
+
             let newData = {
                 url: urlInput.value,
                 name: nameInput.value
@@ -96,10 +99,14 @@ function pushData(e) {
             }
 
             transaction.onerror = function() {
-                status_space.textContent = "Transaction not completed due to some error.";
+                status_space.innerHTML = "Transaction not completed due to some error. <br> Check if there is a duplicate URL in your list.";
             }
-        } else {
-            status_space.textContent = "URL is empty/valid.";
+        } else if (!urlInput.value) {
+            status_space.textContent = "URL is empty.";
+            urlInput.focus();
+            e.preventDefault();
+        } else if (!(urlInput.value.match(urlRegex))) {
+            status_space.textContent = "URL inputted has invalid format.";
             urlInput.focus();
             e.preventDefault();
         }
@@ -138,6 +145,7 @@ function pushData(e) {
                 closeButton.onclick = deleteItem;
 
                 link.setAttribute("href", cursor.value.url);
+                link.setAttribute("target", "_blank");
 
                 /* checking if the user has entered a name for their bookmark
                 if it does, the name will appear on the list, instead */
@@ -178,6 +186,7 @@ function pushData(e) {
         // checks if the list is empty
         isEmptyList();
     
+        // updates the database and display as appropriate
         displayData();
     }
 
