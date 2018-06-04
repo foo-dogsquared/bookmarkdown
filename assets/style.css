@@ -95,6 +95,14 @@ a, a:visited {
     font-size: 1.1em;
 }
 
+#header .github-link {
+    font-size: 1.1em;
+}
+
+#header .github-link > a {
+    color: #b3411d;
+}
+
 @media screen and (max-width: 500px) {
     #header .program-desc {
         width: 100%;

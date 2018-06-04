@@ -12,14 +12,14 @@
     <!-- related docs -->
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="./assets/queries.css">
-    <link rel="shortcut icon" href="../favicon.svg" type="image/x-icon" item-height="32px">
+    <link rel="shortcut icon" href="../assets/main/personal-logo.jpg" type="image/x-icon" item-height="32px">
 
     <title> Custom Resource Page </title>
 </head>
 
 <body>    <!-- overall container -->
     <div id="motherContainer">
-        <img class="personal_logo" src="./assets/images/personal_logo.svg" alt="My logo">
+        <a href="https://foo-dogsquared.github.io" target="_blank"><img class="personal_logo" src="./assets/images/personal_logo.svg" alt="My logo"></a>
         <!-- the header, OBVIOUSLY! -->
         <div id="header">
             <div id="icon">
@@ -29,12 +29,13 @@
                 </span>
             </div>
             <label for="inputLink" class="title">bookmarkdown</label>
+            <p class="github-link">GitHub Link: <a href="https://github.com/foo-dogsquared/bookmarkdown" target="_blank" style="color:#b3411d">bookmarkdown</a></p>
             <p class="program-desc">A program that stores your favorite places on the internet. No worries about tracking you, this is an offline
                 tool and the data are saved inside of your browser using IndexedDB (hopefully you're not infected by malwares, though).
             </p>
         </div>
 
-        <div id="mainContainer">
+        <main id="mainContainer">
             <!-- actual links container -->
             <div id="main-linkContainer">
                 <input name="inputLink" id="inputLink" placeholder="URL" title="Put the URL here, make sure it is valid." type="text">
@@ -53,12 +54,12 @@
                 <ul id="list">
                 </ul>
             </div>
-        </div>
+        </main>
 
         <!-- obv, the footer -->
-        <div id="footer">
+        <footer id="footer">
             Written and coded by Gabriel Arazas
-        </div>
+        </footer>
     </div>
 
     <!-- JavaScript source file-->
