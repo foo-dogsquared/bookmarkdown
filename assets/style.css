@@ -87,9 +87,7 @@ a, a:visited {
 }
 
 #header .program-desc {
-    margin: 0 auto;
-    padding: .4em;
-
+    margin: .4em auto;
     width: 70%;
 
     font-size: 1.1em;
@@ -97,6 +95,8 @@ a, a:visited {
 
 #header .github-link {
     font-size: 1.1em;
+    width: 25%;
+    margin: 1em auto;
 }
 
 #header .github-link > a {
@@ -271,8 +271,19 @@ a, a:visited {
     }
 }
 
-.closeBtn {
+.closeBtnContainer {
     padding: 0 3vh;
+}
+
+.closeBtn {
+    transition: .3s;
+}
+
+.closeBtn:hover {
+    transform: scale(3);
+    -ms-transform: scale(1.5, 1.5); /* IE 9 */
+    -webkit-transform: scale(1.5, 1.5);
+    transition: .4s;
 }
 
 /*

@@ -137,12 +137,15 @@ function pushData(e) {
             if (cursor) {
                 let listItem = document.createElement("li"),
                     link = document.createElement("a"),
+                    closeButtonContainer = document.createElement("span"),
                     closeButton = document.createElement("p");
 
                 // adding the required items
+                closeButtonContainer.setAttribute("class", "closeBtnContainer");
                 closeButton.setAttribute("class", "closeBtn");
                 closeButton.textContent = "X";
                 closeButton.onclick = deleteItem;
+                closeButtonContainer.appendChild(closeButton);
 
                 link.setAttribute("href", cursor.value.url);
                 link.setAttribute("target", "_blank");
@@ -156,7 +159,7 @@ function pushData(e) {
 
                 // adding the elements inside of the list item
                 listItem.appendChild(link);
-                listItem.appendChild(closeButton);
+                listItem.appendChild(closeButtonContainer);
 
                 // list item adding to the list
                 list.appendChild(listItem);
