@@ -265,25 +265,14 @@ a, a:visited {
     width: 100%;
 }
 
+#savedLinks li > p.closeBtn {
+    padding: 0 2vh;
+}
+
 @media screen and (max-width: 700px) {
     #savedLinks ul {
         padding: 0;
     }
-}
-
-.closeBtnContainer {
-    padding: 0 3vh;
-}
-
-.closeBtn {
-    transition: .3s;
-}
-
-.closeBtn:hover {
-    transform: scale(3);
-    -ms-transform: scale(1.5, 1.5); /* IE 9 */
-    -webkit-transform: scale(1.5, 1.5);
-    transition: .4s;
 }
 
 /*
